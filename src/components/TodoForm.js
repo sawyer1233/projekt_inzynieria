@@ -1,36 +1,61 @@
-import React , {useState} from 'react'
+import React, { useState, useEffect, useRef } from 'react';
 
 function TodoForm(props) {
-const[input,setinput] = useState('');
+  const [input, setInput] = useState(props.edit ? props.edit.value : '');
 
-const handleChange = e=>{
-    setinput(e.target.value);
-};
+  const inputRef = useRef(null);
 
-const handleSubmit = e =>{
+  useEffect(() => {
+    inputRef.current.focus();
+  });
+
+  const handleChange = e => {
+    setInput(e.target.value);
+  };
+
+  const handleSubmit = e => {
     e.preventDefault();
 
     props.onSubmit({
-        id:Math.floor(Math.random()*1000),
-        text: input
+      id: Math.floor(Math.random() * 10000),
+      text: input
     });
+    setInput('');
+  };
 
-    setinput('');
-};
   return (
-    <form className='todo-form' onSubmit={handleSubmit}>
-        <input type='text' 
-        placeholder='Add a todo' 
-        value={input}
-        name='text'
-        className='todo-input'
-        onChange={handleChange}
-        />
-        <button className='todo-button'>Add todo</button>
-
-
+    <form onSubmit={handleSubmit} className='todo-form'>
+      {props.edit ? (
+        <>
+          <input
+            placeholder='Edytuj zadanie'
+            value={input}
+            onChange={handleChange}
+            name='text'
+            ref={inputRef}
+            className='todo-input edit'
+          />
+          <button onClick={handleSubmit} className='todo-button edit'>
+            Edytuj
+          </button>
+        </>
+      ) : (
+        <>
+          <input
+            placeholder='Dodaj zadanie'
+            value={input}
+            onChange={handleChange}
+            name='text'
+            className='todo-input'
+            ref={inputRef}
+          />
+          <button onClick={handleSubmit} className='todo-button'>
+            Dodaj
+          </button>
+        </>
+      )}
     </form>
-  )
+  );
 }
 
-export default TodoForm
+export default TodoForm;
