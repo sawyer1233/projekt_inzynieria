@@ -29,13 +29,6 @@ function TodoList() {
     console.log(...todos);
   };
 
-  const updateTodo = (todoId, newValue) => {
-    if (!newValue.text || /^\s*$/.test(newValue.text)) {
-      return;
-    }
-
-    setTodos(prev => prev.map(item => (item.id === todoId ? newValue : item)));
-  };
 
   const removeTodo = id => {
     const removedArr = [...todos].filter(todo => todo.id !== id);
@@ -53,13 +46,6 @@ function TodoList() {
     setTodos(updatedTodos);
   };
 
-  function Result() {
-    if(result.isNaN)
-      return <h2></h2>  
-    else
-      return <h2>Wykonałeś {result} % obowiązków na dziś.</h2>  
-  }
-
   return (
     <>
       <h1>Plany na dzisiaj:</h1>
@@ -69,9 +55,8 @@ function TodoList() {
         todos={todos}
         completeTodo={completeTodo}
         removeTodo={removeTodo}
-        updateTodo={updateTodo}
       />
-      {Result()}
+      <h2>Wykonałeś {result} % obowiązków na dziś.</h2>  
     </>
   );
 }
